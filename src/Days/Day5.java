@@ -1,26 +1,16 @@
 package Days;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import utility.FileReader;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
 
 public class Day5 {
+    String text = new FileReader("resources/D5/input").fileReaderString();
+
     public Day5() {
-        String text = fileReader("resources/D5/input");
         System.out.println("D5 - The password for door ID " + text + " : " + genPass(text));
         System.out.println("D5 - The password with the new method for door ID " + text + " : " + genPassSpecial(text));
-    }
-
-    private String fileReader(String res) {
-        String input = "";
-        try (Scanner scanner = new Scanner(new File(res))) {
-            input = scanner.nextLine();
-        } catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
-        }
-        return input;
     }
 
     private static String genPassSpecial(String text) {

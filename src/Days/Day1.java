@@ -1,15 +1,16 @@
 package Days;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import utility.FileReader;
+
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day1 {
+    String text = new FileReader("resources/D1/input").fileReaderString();
+
     private enum directions {N, S, E, W}
 
     private final Set<String> locations = new HashSet<>();
@@ -19,23 +20,16 @@ public class Day1 {
     Position poz = new Position();
 
     public Day1() {
-        fileReader("resources/D1/input");
+        processFileContent();
         processCommands();
         System.out.println("D1 - The Easter Bunny is away: " + poz.getDistance());
-        System.out.println("D1/2 - The Easter Bunny is first away: " + poz.getFoundDistance());
+        System.out.println("D1/2 - The Easter Bunny is first visit twice: " + poz.getFoundDistance());
     }
 
-    private void fileReader(String res) {
-        try (Scanner scanner = new Scanner(new File(res))) {
-            while (scanner.hasNext()) {
-                Matcher commands = Pattern.compile("(\\w+\\d+)").matcher(scanner.nextLine());
-
-                while (commands.find()) {
-                    commandList.add(commands.group(1));
-                }
-            }
-        } catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
+    private void processFileContent() {
+        Matcher commands = Pattern.compile("(\\w+\\d+)").matcher(text);
+        while (commands.find()) {
+            commandList.add(commands.group(1));
         }
     }
 

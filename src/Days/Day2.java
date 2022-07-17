@@ -1,33 +1,21 @@
 package Days;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import utility.FileReader;
+
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Day2 {
-    ArrayList<String> codes = new ArrayList<>();
+    ArrayList<String> codes = new FileReader("resources/D2/input").fileReaderArrayList();
     StringBuffer oldCode = new StringBuffer();
     StringBuffer newCode = new StringBuffer();
     OldKeypad oldKeypad = new OldKeypad();
     NewKeypad newKeypad = new NewKeypad();
 
     public Day2() {
-        fileReader("resources/D2/input");
         processCodes(oldCode, oldKeypad);
         System.out.println("D2 - The bathroom code is: " + oldCode.toString());
         processCodes(newCode, newKeypad);
         System.out.println("D2/2 - The other bathroom code is: " + newCode.toString());
-    }
-
-    private void fileReader(String res) {
-        try (Scanner scanner = new Scanner(new File(res))) {
-            while (scanner.hasNext()) {
-                codes.add(scanner.nextLine());
-            }
-        } catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
-        }
     }
 
     public void processCodes(StringBuffer code, Keypad keypad) {
