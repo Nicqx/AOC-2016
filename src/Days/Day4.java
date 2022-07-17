@@ -1,28 +1,27 @@
 package Days;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.*;
+import utility.FileReader;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day4 {
+    ArrayList<String> fileContent = new FileReader("resources/D4/input").fileReaderArrayList();
     ArrayList<Room> rooms = new ArrayList<>();
 
     public Day4() {
-        fileReader("resources/D4/input");
+        processFileContent();
         System.out.println("D4 - The valid room sectorID's sum: " + sumValidRooms());
         System.out.println("D4/2 - The north pole storage ID: " + getNorthPoleStorageID());
 
     }
 
-    private void fileReader(String res) {
-        try (Scanner scanner = new Scanner(new File(res))) {
-            while (scanner.hasNext()) {
-                rooms.add(new Room(scanner.nextLine()));
-            }
-        } catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
+    private void processFileContent() {
+        for (String line : fileContent) {
+            rooms.add(new Room(line));
         }
     }
 
