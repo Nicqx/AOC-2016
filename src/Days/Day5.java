@@ -10,7 +10,7 @@ public class Day5 {
 
     public Day5() {
         System.out.println("D5 - The password for door ID " + text + " : " + genPass(text));
-        System.out.println("D5 - The password with the new method for door ID " + text + " : " + genPassSpecial(text));
+        System.out.println("D5/2 - The password with the new method for door ID " + text + " : " + genPassSpecial(text));
     }
 
     private static String genPassSpecial(String text) {
