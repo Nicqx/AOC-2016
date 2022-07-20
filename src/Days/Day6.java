@@ -9,8 +9,8 @@ public class Day6 {
     Map<Character, Integer> population = new HashMap<>();
 
     public Day6() {
-        System.out.println("D6 - The the error-corrected version is: " +getHighestValues());
-        System.out.println("D6/2 - The the error-corrected version with the new methodology is: " +getLowestValues());
+        System.out.println("D6 - The error-corrected version is: " +getHighestValues());
+        System.out.println("D6/2 - The error-corrected version with the new methodology is: " +getLowestValues());
     }
 
     public String getHighestValues() {
