@@ -5,36 +5,24 @@ import utility.FileReader;
 import java.util.ArrayList;
 
 public class Day2 {
-    ArrayList<String> codes = new FileReader("resources/D2/input").fileReaderArrayList();
-    StringBuffer oldCode = new StringBuffer();
-    StringBuffer newCode = new StringBuffer();
-    OldKeypad oldKeypad = new OldKeypad();
-    NewKeypad newKeypad = new NewKeypad();
 
     public Day2() {
-        processCodes(oldCode, oldKeypad);
-        System.out.println("D2 - The bathroom code is: " + oldCode.toString());
-        processCodes(newCode, newKeypad);
-        System.out.println("D2/2 - The other bathroom code is: " + newCode.toString());
+        ArrayList<String> codes = new FileReader("resources/D2/input").fileReaderArrayList();
+        StringBuffer oldCode = processCodes(new OldKeypad(), codes);
+        System.out.println("D2 - The bathroom code is: " + oldCode);
+        StringBuffer newCode = processCodes(new NewKeypad(), codes);
+        System.out.println("D2/2 - The other bathroom code is: " + newCode);
     }
 
-    public void processCodes(StringBuffer code, Keypad keypad) {
+    static StringBuffer processCodes(Keypad keypad, ArrayList<String> codes) {
+        StringBuffer code = new StringBuffer();
         for (String oneCode : codes) {
-            processCode(oneCode, keypad);
+            keypad.processCode(oneCode);
             code.append(keypad.getNumber());
         }
+        return code;
     }
 
-    public void processCode(String oneCode, Keypad keypad) {
-        for (int i = 0; i < oneCode.length(); i++) {
-            switch (oneCode.charAt(i)) {
-                case 'R' -> keypad.incX();
-                case 'L' -> keypad.decX();
-                case 'U' -> keypad.incY();
-                case 'D' -> keypad.decY();
-            }
-        }
-    }
 
     public interface Keypad {
         void incX();
@@ -46,9 +34,11 @@ public class Day2 {
         void decY();
 
         String getNumber();
+
+        void processCode(String oneCode);
     }
 
-    private static class NewKeypad implements Keypad {
+    static class NewKeypad implements Keypad {
         int x;
         int y;
 
@@ -91,52 +81,64 @@ public class Day2 {
 
         @Override
         public String getNumber() {
-            String result="";
-            if(x==0 && y==2){
-                result="1";
+            String result = "";
+            if (x == 0 && y == 2) {
+                result = "1";
             }
-            if(x==-1 && y==1){
-                result="2";
+            if (x == -1 && y == 1) {
+                result = "2";
             }
-            if(x==0 && y==1){
-                result ="3";
+            if (x == 0 && y == 1) {
+                result = "3";
             }
-            if(x==1 && y==1){
-                result ="4";
+            if (x == 1 && y == 1) {
+                result = "4";
             }
-            if(x==-2 && y==0){
-                result="5";
+            if (x == -2 && y == 0) {
+                result = "5";
             }
-            if(x==-1 && y==0){
-                result="6";
+            if (x == -1 && y == 0) {
+                result = "6";
             }
-            if(x==0 && y==0){
-                result="7";
+            if (x == 0 && y == 0) {
+                result = "7";
             }
-            if(x==1&&y==0){
-                result="8";
+            if (x == 1 && y == 0) {
+                result = "8";
             }
-            if(x==2 &&y==0){
-                result="9";
+            if (x == 2 && y == 0) {
+                result = "9";
             }
-            if(x==-1 && y==-1){
-                result="A";
+            if (x == -1 && y == -1) {
+                result = "A";
             }
-            if(x==0 && y==-1){
-                result="B";
+            if (x == 0 && y == -1) {
+                result = "B";
             }
-            if(x==1 && y==-1){
-                result ="C";
+            if (x == 1 && y == -1) {
+                result = "C";
             }
-            if(x==0 && y==-2){
-                result="D";
+            if (x == 0 && y == -2) {
+                result = "D";
             }
 
             return result;
         }
+
+        @Override
+        public void processCode(String oneCode) {
+            for (int i = 0; i < oneCode.length(); i++) {
+                switch (oneCode.charAt(i)) {
+                    case 'R' -> incX();
+                    case 'L' -> decX();
+                    case 'U' -> incY();
+                    case 'D' -> decY();
+                }
+            }
+        }
     }
 
-    private static class OldKeypad implements Keypad {
+    static class OldKeypad implements Keypad {
         int x;
         int y;
 
@@ -208,6 +210,18 @@ public class Day2 {
                 result = "9";
             }
             return result;
+        }
+
+        @Override
+        public void processCode(String oneCode) {
+            for (int i = 0; i < oneCode.length(); i++) {
+                switch (oneCode.charAt(i)) {
+                    case 'R' -> incX();
+                    case 'L' -> decX();
+                    case 'U' -> incY();
+                    case 'D' -> decY();
+                }
+            }
         }
     }
 
