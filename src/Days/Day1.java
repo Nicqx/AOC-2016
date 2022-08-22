@@ -9,119 +9,126 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day1 {
-    String text = new FileReader("resources/D1/input").fileReaderString();
-
-    private enum directions {N, S, E, W}
-
-    private final Set<String> locations = new HashSet<>();
-
-    directions actualState = directions.N;
-    ArrayList<String> commandList = new ArrayList<>();
-    Position poz = new Position();
 
     public Day1() {
-        processFileContent();
-        processCommands();
-        System.out.println("D1 - The Easter Bunny is away: " + poz.getDistance());
-        System.out.println("D1/2 - The Easter Bunny is first visit twice: " + poz.getFoundDistance());
+        String text = new FileReader("resources/D1/input").fileReaderString();
+        ArrayList<String> commandList = processFileContent(text);
+        Position poz = processCommands(commandList);
+        System.out.println("D1 - The Easter Bunny is away: " + poz.getAbsoluteDistance());
+        System.out.println("D1/2 - The Easter Bunny is first visit twice: " + poz.getFirstDoubleVisitedDistance());
+
     }
 
-    private void processFileContent() {
+    static ArrayList<String> processFileContent(String text) {
+        ArrayList<String> commandList = new ArrayList<>();
         Matcher commands = Pattern.compile("(\\w+\\d+)").matcher(text);
         while (commands.find()) {
             commandList.add(commands.group(1));
         }
+        return commandList;
     }
 
-    private void processCommands() {
+    static Position processCommands(ArrayList<String> commandList){
+        Position poz = new Position();
         for (String element : commandList) {
             if (element.charAt(0) == 'R') {
-                switch (actualState) {
-                    case N -> actualState = directions.E;
-                    case E -> actualState = directions.S;
-                    case W -> actualState = directions.N;
-                    case S -> actualState = directions.W;
+                switch (poz.actualState) {
+                    case N -> poz.actualState = Position.directions.E;
+                    case E -> poz.actualState = Position.directions.S;
+                    case W -> poz.actualState = Position.directions.N;
+                    case S -> poz.actualState = Position.directions.W;
                 }
             } else {
-                switch (actualState) {
-                    case N -> actualState = directions.W;
-                    case E -> actualState = directions.N;
-                    case W -> actualState = directions.S;
-                    case S -> actualState = directions.E;
+                switch (poz.actualState) {
+                    case N -> poz.actualState = Position.directions.W;
+                    case E -> poz.actualState = Position.directions.N;
+                    case W -> poz.actualState = Position.directions.S;
+                    case S -> poz.actualState = Position.directions.E;
                 }
             }
             for (int i = 0; i < Integer.parseInt(element.substring(1)); i++) {
-                goForwardOneStep();
-                if (!locations.contains(poz.getX() + "," + poz.getY())) {
-                    locations.add(poz.getX() + "," + poz.getY());
-                } else {
-                    if (poz.getFoundX() == 0 && poz.getFoundY() == 0) {
-                        poz.setFoundX(poz.getX());
-                        poz.setFoundY(poz.getY());
-                    }
+                poz.goForwardOneStep();
+                poz.addVisitedLocation(poz.getAbsoluteX(), poz.getAbsoluteY());
+            }
+        }
+
+        return poz;
+    }
+
+
+    static class Position {
+        private int absoluteX;
+        private int absoluteY;
+        private int doubleVisitedX;
+        private int doubleVisitedY;
+        private enum directions {N, S, E, W}
+        directions actualState;
+        private final Set<String> visitedLocations = new HashSet<>();
+
+        public Position() {
+            this.absoluteX = 0;
+            this.absoluteY = 0;
+            this.actualState = directions.N;
+        }
+
+        private void goForwardOneStep() {
+            switch (actualState) {
+                case N -> setAbsoluteY(getAbsoluteY() + 1);
+                case E -> setAbsoluteX(getAbsoluteX() + 1);
+                case S -> setAbsoluteY(getAbsoluteY() - 1);
+                case W -> setAbsoluteX(getAbsoluteX() - 1);
+            }
+        }
+
+        private void addVisitedLocation(int x, int y){
+            if (!visitedLocations.contains(x + "," + y)) {
+                visitedLocations.add(x + "," + y);
+            } else {
+                if (getDoubleVisitedX() == 0 && getDoubleVisitedY() == 0) {
+                    setDoubleVisitedX(x);
+                    setDoubleVisitedY(y);
                 }
             }
         }
-    }
 
-    private void goForwardOneStep() {
-        switch (actualState) {
-            case N -> poz.setY(poz.getY() + 1);
-            case E -> poz.setX(poz.getX() + 1);
-            case S -> poz.setY(poz.getY() - 1);
-            case W -> poz.setX(poz.getX() - 1);
-        }
-    }
-
-    private static class Position {
-        private int x;
-        private int y;
-        private int foundX;
-        private int foundY;
-
-        public Position() {
-            this.x = 0;
-            this.y = 0;
+        public int getAbsoluteX() {
+            return absoluteX;
         }
 
-        public int getX() {
-            return x;
+        public void setAbsoluteX(int absoluteX) {
+            this.absoluteX = absoluteX;
         }
 
-        public void setX(int x) {
-            this.x = x;
+        public int getAbsoluteY() {
+            return absoluteY;
         }
 
-        public int getY() {
-            return y;
+        public void setAbsoluteY(int absoluteY) {
+            this.absoluteY = absoluteY;
         }
 
-        public void setY(int y) {
-            this.y = y;
+        public int getDoubleVisitedX() {
+            return doubleVisitedX;
         }
 
-        public int getFoundX() {
-            return foundX;
+        public void setDoubleVisitedX(int doubleVisitedX) {
+            this.doubleVisitedX = doubleVisitedX;
         }
 
-        public void setFoundX(int foundX) {
-            this.foundX = foundX;
+        public int getDoubleVisitedY() {
+            return doubleVisitedY;
         }
 
-        public int getFoundY() {
-            return foundY;
+        public void setDoubleVisitedY(int doubleVisitedY) {
+            this.doubleVisitedY = doubleVisitedY;
         }
 
-        public void setFoundY(int foundY) {
-            this.foundY = foundY;
+        public int getAbsoluteDistance() {
+            return Math.abs(absoluteX + absoluteY);
         }
 
-        public int getDistance() {
-            return Math.abs(x + y);
-        }
-
-        public int getFoundDistance() {
-            return Math.abs(foundX + foundY);
+        public int getFirstDoubleVisitedDistance() {
+            return Math.abs(doubleVisitedX + doubleVisitedY);
         }
     }
 }
