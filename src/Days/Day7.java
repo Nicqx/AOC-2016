@@ -5,22 +5,21 @@ import utility.FileReader;
 import java.util.ArrayList;
 
 public class Day7 {
-    ArrayList<String> ips = new FileReader("resources/D7/input").fileReaderArrayList();
-    ArrayList<Address> addresses = new ArrayList<>();
-
     public Day7() {
-        readAddresses();
-        System.out.println("D7 - the TLS supported addresses count is: " + countTLS());
-        System.out.println("D7/2 - the SSL supported addresses count is: " + countSSL());
+        ArrayList<String> ips = new FileReader("resources/D7/input").fileReaderArrayList();
+        System.out.println("D7 - the TLS supported addresses count is: " + countTLS(readAddresses(ips)));
+        System.out.println("D7/2 - the SSL supported addresses count is: " + countSSL(readAddresses(ips)));
     }
 
-    private void readAddresses() {
+    static ArrayList<Address> readAddresses(ArrayList<String> ips) {
+        ArrayList<Address> addresses = new ArrayList<>();
         for (String element : ips) {
             addresses.add(new Address(element));
         }
+        return addresses;
     }
 
-    private int countTLS() {
+    static int countTLS(ArrayList<Address> addresses) {
         int counter = 0;
         for (Address element : addresses) {
             if (element.validateTLS()) {
@@ -30,7 +29,7 @@ public class Day7 {
         return counter;
     }
 
-    private int countSSL() {
+    static int countSSL(ArrayList<Address> addresses) {
         int counter = 0;
         for (Address element : addresses) {
             if (element.validateSSL()) {
@@ -39,7 +38,7 @@ public class Day7 {
         }
         return counter;
     }
-    private static class Address {
+    static class Address {
         ArrayList<String> hypernets = new ArrayList<>(); // inside brackets
         ArrayList<String> subnets = new ArrayList<>(); // outside brackets
 
@@ -101,7 +100,7 @@ public class Day7 {
             return b + a + b;
         }
 
-        public boolean validateSSL() {
+        boolean validateSSL() {
             boolean result = false;
             if (findAba(subnets).isEmpty()) return false;
             //bab hypernet with aba subnet
@@ -114,7 +113,7 @@ public class Day7 {
             return result;
         }
 
-        public boolean validateTLS() {
+        boolean validateTLS() {
             boolean result = false;
             //if subnet then false
             if (!findAbba(hypernets).isEmpty()) return false;
