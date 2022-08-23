@@ -2,34 +2,36 @@ package Days;
 
 import utility.FileReader;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Day6 {
-    ArrayList<String> codes = new FileReader("resources/D6/input").fileReaderArrayList();
-    Map<Character, Integer> population = new HashMap<>();
 
     public Day6() {
-        System.out.println("D6 - The error-corrected version is: " +getHighestValues());
-        System.out.println("D6/2 - The error-corrected version with the new methodology is: " +getLowestValues());
+        ArrayList<String> codes = new FileReader("resources/D6/input").fileReaderArrayList();
+        System.out.println("D6 - The error-corrected version is: " + getHighestValues(codes));
+        System.out.println("D6/2 - The error-corrected version with the new methodology is: " + getLowestValues(codes));
     }
 
-    public String getHighestValues() {
+    static String getHighestValues(ArrayList<String> codes) {
+        Map<Character, Integer> population = new HashMap<>();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < codes.get(0).length(); i++) {
             population.clear();
-            for(String code: codes){
-                if(population.containsKey(code.charAt(i))){
-                    population.put(code.charAt(i), population.get(code.charAt(i))+1);
-                }else{
-                    population.put(code.charAt(i),1);
+            for (String code : codes) {
+                if (population.containsKey(code.charAt(i))) {
+                    population.put(code.charAt(i), population.get(code.charAt(i)) + 1);
+                } else {
+                    population.put(code.charAt(i), 1);
                 }
             }
             int max = 0;
             Character maxCh = null;
-            for(Character ch: population.keySet()){
-                if(population.get(ch)>max){
-                    max=population.get(ch);
-                    maxCh=ch;
+            for (Character ch : population.keySet()) {
+                if (population.get(ch) > max) {
+                    max = population.get(ch);
+                    maxCh = ch;
                 }
             }
             sb.append(maxCh);
@@ -37,23 +39,24 @@ public class Day6 {
         return sb.toString();
     }
 
-    public String getLowestValues() {
+    static String getLowestValues(ArrayList<String> codes) {
+        Map<Character, Integer> population = new HashMap<>();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < codes.get(0).length(); i++) {
             population.clear();
-            for(String code: codes){
-                if(population.containsKey(code.charAt(i))){
-                    population.put(code.charAt(i), population.get(code.charAt(i))+1);
-                }else{
-                    population.put(code.charAt(i),1);
+            for (String code : codes) {
+                if (population.containsKey(code.charAt(i))) {
+                    population.put(code.charAt(i), population.get(code.charAt(i)) + 1);
+                } else {
+                    population.put(code.charAt(i), 1);
                 }
             }
             int min = Integer.MAX_VALUE;
             Character minCh = null;
-            for(Character ch: population.keySet()){
-                if(population.get(ch)<min){
-                    min=population.get(ch);
-                    minCh=ch;
+            for (Character ch : population.keySet()) {
+                if (population.get(ch) < min) {
+                    min = population.get(ch);
+                    minCh = ch;
                 }
             }
             sb.append(minCh);
