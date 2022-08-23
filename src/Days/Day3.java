@@ -7,14 +7,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day3 {
-    ArrayList<String> triangles = new FileReader("resources/D3/input").fileReaderArrayList();
-
     public Day3() {
-        System.out.println("D3 - These triangles are possible: " + processList());
-        System.out.println("D3/2 - These triangles are possible vertically: " + processListVertically());
+        ArrayList<String> triangles = new FileReader("resources/D3/input").fileReaderArrayList();
+        System.out.println("D3 - These triangles are possible: " + processList(triangles));
+        System.out.println("D3/2 - These triangles are possible vertically: " + processListVertically(triangles));
     }
 
-    private int processListVertically() {
+    static int processListVertically(ArrayList<String> triangles) {
         int result = 0;
         for (int i = 0; i < triangles.get(0).split("\\W+").length; i++) {
             for (int j = 0; j < triangles.size(); j += 3) {
@@ -33,7 +32,7 @@ public class Day3 {
         return result;
     }
 
-    private int processList() {
+    static int processList(ArrayList<String> triangles) {
         int result = 0;
         for (String element : triangles) {
             if (isTriangle(element)) {
@@ -43,7 +42,7 @@ public class Day3 {
         return result;
     }
 
-    private boolean isTriangle(String input) {
+    static boolean isTriangle(String input) {
         boolean result = false;
         Matcher matcher = Pattern.compile("(\\d+)\\W+(\\d+)\\W+(\\d+)").matcher(input);
         if (matcher.find()) {
