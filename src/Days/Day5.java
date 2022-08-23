@@ -6,14 +6,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Day5 {
-    String text = new FileReader("resources/D5/input").fileReaderString();
 
     public Day5() {
+        String text = new FileReader("resources/D5/input").fileReaderString();
         System.out.println("D5 - The password for door ID " + text + " : " + genPass(text));
         System.out.println("D5/2 - The password with the new method for door ID " + text + " : " + genPassSpecial(text));
     }
 
-    private static String genPassSpecial(String text) {
+    static String genPassSpecial(String text) {
         int answer = 0;
         StringBuilder pass = new StringBuilder("zzzzzzzz");
         int replaceCounter = 0;
@@ -37,7 +37,7 @@ public class Day5 {
         return pass.toString();
     }
 
-    private static String genPass(String text) {
+    static String genPass(String text) {
         int answer = 0;
         StringBuilder pass = new StringBuilder();
         while (pass.toString().length() != 8) {
@@ -51,7 +51,7 @@ public class Day5 {
         return pass.toString();
     }
 
-    private static String hashMD5(String text) {
+    static String hashMD5(String text) {
         byte[] msg = text.getBytes();
 
         byte[] hash = null;
