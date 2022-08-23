@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import static Days.Day3.*;
 
-@DisplayName("Testing the Day2 class")
+@DisplayName("Testing the Day3 class")
 public class Day3Test {
     @ParameterizedTest
     @ValueSource(strings = {"input1:0"})
